@@ -47,10 +47,15 @@ def main():
     frame_width = int(video_capture.get(cv2.CAP_PROP_FRAME_WIDTH))
     frame_height = int(video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
     fps = int(video_capture.get(cv2.CAP_PROP_FPS))
+    # Ensure the output_data directory exists
+    output_dir = 'output_data'
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    output_path = os.path.join(output_dir, 'output_video.avi')
     
     # Define the codec and create VideoWriter object to save the output
     fourcc = cv2.VideoWriter_fourcc(*'XVID')  # Codec for .avi files
-    output_video = cv2.VideoWriter('output_video.avi', fourcc, fps, (frame_width, frame_height))
+    output_video = cv2.VideoWriter(output_path, fourcc, fps, (frame_width, frame_height))
 
     while True:
         ret, frame = video_capture.read()
