@@ -43,6 +43,14 @@ def main():
 
     # Start video capture
     video_capture = cv2.VideoCapture("input_data/video.mp4")
+    # Get video properties
+    frame_width = int(video_capture.get(cv2.CAP_PROP_FRAME_WIDTH))
+    frame_height = int(video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    fps = int(video_capture.get(cv2.CAP_PROP_FPS))
+    
+    # Define the codec and create VideoWriter object to save the output
+    fourcc = cv2.VideoWriter_fourcc(*'XVID')  # Codec for .avi files
+    output_video = cv2.VideoWriter('output_video.avi', fourcc, fps, (frame_width, frame_height))
 
     while True:
         ret, frame = video_capture.read()
@@ -69,12 +77,14 @@ def main():
 
         # Display the frame with detected faces
         cv2.imshow('Video', frame)
+        output_video.write(frame)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
     # Release the video capture and close all windows
     video_capture.release()
+    output_video.release()
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
